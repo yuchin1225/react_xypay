@@ -1,24 +1,22 @@
 import React from "react";
-import Home from "./layout/home";
+import { Image } from "react-bootstrap";
+import Main from "./layout/home";
 import Footer from "./public/footer";
 
-import "./public/css/index.css";
-
 import background from "./public/img/backgroud.png";
-
-// const background = require("./public/img/backgroud.png");
+import "./public/css/index.css";
 
 const App = () => {
     return (
         <>
             <div className="position-relative w-100">
-                <img
+                <Image
                     className="position-absolute top-50 start-50 translate-middle"
-                    style={{ width: "100%", height: "50rem", zIndex: "-999" }}
                     src={background}
+                    style={{ width: "100%", height: "50rem", zIndex: "-999" }}
                 />
             </div>
-            <Home />
+            <Main />
             <Footer />
         </>
     )
