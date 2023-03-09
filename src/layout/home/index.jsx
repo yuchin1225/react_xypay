@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, FloatingLabel, Button, Image } from "react-bootstrap";
 import searchImg from "../../public/img/btn-search.png";
 import Icon from "../../public/svg";
 
+import { useSelector, useDispatch } from "react-redux";
+
 import { strReplace } from "../../public/tools";
-import carplateRequest from "../../public/tools/api";
+import getCarplate from "../../public/tools/api";
 
 import { Message } from "../../public/modal/modal.jsx";
 
+import * as actionTypes from "../../store/action-types";
+
 
 const Main = () => {
+
+    const store = useSelector(store => store.carMessage);
+    const dispatch = useDispatch();
+
     const [show, setShow] = useState(false);
     const [carplate, setCarplate] = useState("");
 
@@ -17,26 +25,42 @@ const Main = () => {
         setCarplate(e.target.value);
     }
 
-    const getCar = async () => {
+
+    const getCarMessage = async (carplate) => {
         try {
-            const response = await carplateRequest.post("/", { d: "dYaTKFDVzxgHowpLLV7XSRJF127m2knyFecKlPxGRSNPc/ncX/Y8V1sO34iiYRt4mw8oYjbmAmdobTJOMpTRni2OmVOMvUxk" });
-            const data = await response.data;
-            if(data.result){
-                
-            }
+            const { data } = await getCarplate("http://60.248.122.31:8999/xy_pay/request/", {
+                d: "dYaTKFDVzxgHowpLLV7XSRJF127m2knyFecKlPxGRSNPc/ncX/Y8V1sO34iiYRt4mw8oYjbmAmdobTJOMpTRni2OmVOMvUxk",
+                car: carplate
+            }, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+
+            dispatch({
+                type: actionTypes.CAR_MESSAGE,
+                payload: {
+                    ...store,
+                    id: data.result.id,
+                    carplate: data.result.carplate,
+                    datetime: data.result.datetime,
+                    lotid: data.result.lotid
+                }
+            });
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (strReplace(carplate.toUpperCase()) !== "") {
-            
+            getCarMessage(carplate.toUpperCase());
         } else {
             setShow(true);
         }
     }
+
 
     return (
         <Container fluid>
