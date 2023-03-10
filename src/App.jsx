@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import Main from "./layout/home";
+import Main from "./layout";
 import Footer from "./public/footer";
 
 import background from "./public/img/backgroud.png";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, FloatingLabel, Button, Image } from "react-bootstrap";
+import { Fade, Container, Row, Col, Form, FloatingLabel, Button, Image } from "react-bootstrap";
 import searchImg from "../../public/img/btn-search.png";
 import Icon from "../../public/svg";
 
@@ -13,7 +13,7 @@ import { Message } from "../../public/modal/modal.jsx";
 import * as actionTypes from "../../store/action-types";
 
 
-const Main = () => {
+const Home = (props) => {
 
     const store = useSelector(store => store.carMessage);
     const dispatch = useDispatch();
@@ -24,7 +24,6 @@ const Main = () => {
     const handleChange = (e) => {
         setCarplate(e.target.value);
     }
-
 
     const getCarMessage = async (carplate) => {
         try {
@@ -46,7 +45,7 @@ const Main = () => {
                     datetime: data.result.datetime,
                     lotid: data.result.lotid
                 }
-            });
+            })
         } catch (error) {
             console.log(error)
         }
@@ -56,6 +55,7 @@ const Main = () => {
         e.preventDefault();
         if (strReplace(carplate.toUpperCase()) !== "") {
             getCarMessage(carplate.toUpperCase());
+            props.history.push("/payCar");
         } else {
             setShow(true);
         }
@@ -101,4 +101,4 @@ const Main = () => {
     )
 }
 
-export default Main;
+export default Home;
